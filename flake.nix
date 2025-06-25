@@ -28,6 +28,7 @@
             };
           }
           ./modules/git.nix
+          ./modules/node.nix
         ];
       };
     };
