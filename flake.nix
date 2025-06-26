@@ -18,6 +18,7 @@
       packages.${system} = {
         default = pkgs.home-manager;
         mysides = pkgs.mysides;
+        dockutil = pkgs.dockutil;
       };
 
       apps.${system} = {
@@ -28,6 +29,16 @@
         configure-finder-sidebar = {
           type = "app";
           program = toString (pkgs.writeShellScript "configure-finder-sidebar" (builtins.readFile ./scripts/configure-finder-sidebar.sh));
+        };
+        configure-dock = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "configure-dock" (builtins.readFile ./scripts/configure-dock.sh));
+        };
+        activate = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "activate" ''
+            exec ${pkgs.home-manager}/bin/home-manager switch --flake ${self}#chan
+          '');
         };
       };
 
@@ -41,6 +52,7 @@
               stateVersion = "23.11";
               packages = with pkgs; [
                 mysides
+                dockutil
               ];
             };
           }

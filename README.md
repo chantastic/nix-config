@@ -7,6 +7,7 @@ This repository contains my personal Nix configuration using flakes and home-man
 - **Home-Manager Configuration**: User environment management with declarative configuration
 - **Git Configuration**: Complete git setup with aliases, LFS support, and workflow optimizations
 - **Package Management**: User packages and development tools
+- **macOS System Configuration**: Dock and Finder sidebar management
 - **Lessons**: Step-by-step guides for learning Nix configuration
 
 ## Quick Start
@@ -26,7 +27,7 @@ This repository contains my personal Nix configuration using flakes and home-man
 
 2. **Apply the configuration**:
    ```bash
-   nix run .#homeConfigurations.chan.activationPackage
+   nix run .#activate
    ```
 
 3. **Set up shell integration** (if not already done):
@@ -34,6 +35,20 @@ This repository contains my personal Nix configuration using flakes and home-man
    echo 'export PATH="$HOME/.nix-profile/bin:$PATH"' >> ~/.zshrc
    source ~/.zshrc
    ```
+
+## Available Commands
+
+This configuration provides several convenient commands:
+
+### Core Commands
+
+- **`nix run .#activate`** - Apply home-manager configuration (installs packages, applies settings)
+- **`nix run .#macos-settings`** - Apply macOS system preferences
+
+### System Configuration
+
+- **`nix run .#configure-dock`** - Configure macOS dock using dockutil
+- **`nix run .#configure-finder-sidebar`** - Configure Finder sidebar using mysides
 
 ## Making Changes
 
@@ -69,7 +84,7 @@ programs.git = {
 After making any changes to `flake.nix`, apply them:
 
 ```bash
-nix run .#homeConfigurations.chan.activationPackage
+nix run .#activate
 ```
 
 ### Updating macOS Settings
@@ -86,13 +101,34 @@ This will execute the script in `scripts/macos-settings.sh` and apply all your d
 ./scripts/macos-settings.sh
 ```
 
+### Configuring macOS Dock
+
+This configuration includes dock management using the `dockutil` tool. To configure your dock:
+
+```bash
+nix run .#configure-dock
+```
+
+#### Customizing Dock Items
+
+To customize which applications appear in your dock, edit `scripts/configure-dock.sh`:
+
+```bash
+# System applications
+dockutil --add /System/Applications/Messages.app >/dev/null 2>&1
+dockutil --add /System/Applications/Mail.app >/dev/null 2>&1
+
+# User applications (uncomment and modify as needed)
+# dockutil --add /Applications/Visual\ Studio\ Code.app >/dev/null 2>&1
+# dockutil --add /Applications/iTerm.app >/dev/null 2>&1
+
+# Add folders to dock (optional)
+# dockutil --add ~/Downloads --view grid --display folder >/dev/null 2>&1
+```
+
 ### Configuring Finder Sidebar
 
-This configuration includes automatic Finder sidebar management using the `mysides` tool. The sidebar configuration is handled in two ways:
-
-1. **Via Home Manager** (recommended): The `finder-sidebar` module automatically configures your sidebar when you apply your home-manager configuration.
-
-2. **Via standalone script**: You can run the sidebar configuration independently:
+This configuration includes automatic Finder sidebar management using the `mysides` tool. To configure your sidebar:
 
 ```bash
 nix run .#configure-finder-sidebar
@@ -100,29 +136,16 @@ nix run .#configure-finder-sidebar
 
 #### Customizing Sidebar Items
 
-To customize which items appear in your Finder sidebar, edit the `finder-sidebar` configuration in your `flake.nix`:
-
-```nix
-finder-sidebar = {
-  enable = true;
-  removeItems = [ "Recents" "Movies" "Music" "Pictures" ];
-  addItems = [
-    { name = "chan"; path = "/Users/chan/"; }
-    { name = "Documents"; path = "/Users/chan/Documents/"; }
-    { name = "Downloads"; path = "/Users/chan/Downloads/"; }
-    { name = "Desktop"; path = "/Users/chan/Desktop/"; }
-    { name = "Applications"; path = "/Applications/"; }
-    # Add your custom items here
-  ];
-};
-```
-
-#### Manual Installation
-
-If you need to install `mysides` manually (outside of this configuration):
+To customize which items appear in your Finder sidebar, edit `scripts/configure-finder-sidebar.sh`:
 
 ```bash
-brew install mysides
+# Remove unwanted sidebar items
+mysides remove Recents >/dev/null 2>&1
+mysides remove Movies >/dev/null 2>&1
+
+# Add user-specific folders
+mysides add chan file:///Users/chan/
+mysides add Documents file:///Users/chan/Documents/
 ```
 
 ## Configuration Structure
@@ -132,10 +155,16 @@ flake.nix
 ├── inputs
 │   ├── nixpkgs (unstable)
 │   └── home-manager
-└── outputs
-    └── homeConfigurations.chan
-        ├── home.packages (user packages)
-        └── programs.git (git configuration)
+├── outputs
+│   ├── apps (convenient commands)
+│   ├── packages (available packages)
+│   └── homeConfigurations.chan
+│       ├── home.packages (user packages)
+│       └── programs.git (git configuration)
+└── scripts/
+    ├── configure-dock.sh
+    ├── configure-finder-sidebar.sh
+    └── macos-settings.sh
 ```
 
 ## Lessons
@@ -172,13 +201,19 @@ extraConfig = {
 };
 ```
 
+### Home-Manager vs Flake Apps
+
+- **Home-Manager**: Manages user environments, packages, and configuration files
+- **Flake Apps**: Provide convenient commands that wrap home-manager or other tools
+- **Why Wrapper Scripts**: Home-manager doesn't create flake apps automatically, so we create wrapper scripts to expose its functionality
+
 ## Troubleshooting
 
 ### Configuration Not Applied
 
 ```bash
-# Check if home-manager is properly set up
-nix run .#homeConfigurations.chan.activationPackage
+# Apply home-manager configuration
+nix run .#activate
 
 # Verify git configuration
 git config --list --show-origin
@@ -233,6 +268,19 @@ modules = [
   ./modules/git-development.nix
   # ... other modules
 ];
+```
+
+### Adding New Flake Apps
+
+To add a new command, add it to the `apps` section in `flake.nix`:
+
+```nix
+apps.${system} = {
+  my-new-command = {
+    type = "app";
+    program = toString (pkgs.writeShellScript "my-new-command" (builtins.readFile ./scripts/my-new-command.sh));
+  };
+};
 ```
 
 ## Resources
