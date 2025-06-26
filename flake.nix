@@ -17,6 +17,13 @@
     {
       packages.${system}.default = pkgs.home-manager;
 
+      apps.${system} = {
+        macos-settings = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "macos-settings" (builtins.readFile ./scripts/macos-settings.sh));
+        };
+      };
+
       homeConfigurations.chan = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [

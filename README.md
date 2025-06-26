@@ -72,6 +72,20 @@ After making any changes to `flake.nix`, apply them:
 nix run .#homeConfigurations.chan.activationPackage
 ```
 
+### Updating macOS Settings
+
+To (re-)apply your macOS system preferences, run:
+
+```bash
+nix run .#macos-settings
+```
+
+This will execute the script in `scripts/macos-settings.sh` and apply all your declarative macOS settings. You can also run the script directly if you prefer:
+
+```bash
+./scripts/macos-settings.sh
+```
+
 ## Configuration Structure
 
 ```
