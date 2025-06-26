@@ -1,0 +1,10 @@
+# Git functions
+# No arguments: `git status -sb`
+# With arguments: acts like `git`
+g() {
+  if [[ $# -gt 0 ]]; then
+    git $@
+  else
+    git status -sb
+  fi
+} 
