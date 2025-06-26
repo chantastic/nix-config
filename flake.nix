@@ -15,12 +15,19 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      packages.${system}.default = pkgs.home-manager;
+      packages.${system} = {
+        default = pkgs.home-manager;
+        mysides = pkgs.mysides;
+      };
 
       apps.${system} = {
         macos-settings = {
           type = "app";
           program = toString (pkgs.writeShellScript "macos-settings" (builtins.readFile ./scripts/macos-settings.sh));
+        };
+        configure-finder-sidebar = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "configure-finder-sidebar" (builtins.readFile ./scripts/configure-finder-sidebar.sh));
         };
       };
 
@@ -32,6 +39,9 @@
               username = "chan";
               homeDirectory = "/Users/chan";
               stateVersion = "23.11";
+              packages = with pkgs; [
+                mysides
+              ];
             };
           }
           ./modules/git.nix

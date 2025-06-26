@@ -86,6 +86,45 @@ This will execute the script in `scripts/macos-settings.sh` and apply all your d
 ./scripts/macos-settings.sh
 ```
 
+### Configuring Finder Sidebar
+
+This configuration includes automatic Finder sidebar management using the `mysides` tool. The sidebar configuration is handled in two ways:
+
+1. **Via Home Manager** (recommended): The `finder-sidebar` module automatically configures your sidebar when you apply your home-manager configuration.
+
+2. **Via standalone script**: You can run the sidebar configuration independently:
+
+```bash
+nix run .#configure-finder-sidebar
+```
+
+#### Customizing Sidebar Items
+
+To customize which items appear in your Finder sidebar, edit the `finder-sidebar` configuration in your `flake.nix`:
+
+```nix
+finder-sidebar = {
+  enable = true;
+  removeItems = [ "Recents" "Movies" "Music" "Pictures" ];
+  addItems = [
+    { name = "chan"; path = "/Users/chan/"; }
+    { name = "Documents"; path = "/Users/chan/Documents/"; }
+    { name = "Downloads"; path = "/Users/chan/Downloads/"; }
+    { name = "Desktop"; path = "/Users/chan/Desktop/"; }
+    { name = "Applications"; path = "/Applications/"; }
+    # Add your custom items here
+  ];
+};
+```
+
+#### Manual Installation
+
+If you need to install `mysides` manually (outside of this configuration):
+
+```bash
+brew install mysides
+```
+
 ## Configuration Structure
 
 ```
