@@ -3,6 +3,10 @@
 {
   home.packages = with pkgs; [
     nodejs_22  # Latest version
+    # Global packages
+    typescript  # TypeScript compiler (tsc)
+    wrangler    # Cloudflare Wrangler CLI (includes TypeScript support)
+    pnpm        # Fast package manager
   ];
 
   # Set up environment variables for Node.js
