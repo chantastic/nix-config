@@ -7,6 +7,7 @@
     typescript  # TypeScript compiler (tsc)
     wrangler    # Cloudflare Wrangler CLI (includes TypeScript support)
     pnpm        # Fast package manager
+    ffmpeg      # Video and audio processing
   ];
 
   # Set up environment variables for Node.js
