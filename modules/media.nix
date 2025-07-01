@@ -12,5 +12,6 @@
     sox            # Audio processing and effects
     ffmpegthumbnailer  # Generate video thumbnails
     mediainfo      # Media file information
+    nodePackages.svgo  # SVG optimization
   ];
 } 
