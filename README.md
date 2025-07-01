@@ -6,7 +6,8 @@ This repository contains my personal Nix configuration using flakes and home-man
 
 - **Home-Manager Configuration**: User environment management with declarative configuration
 - **Git Configuration**: Complete git setup with aliases, LFS support, and workflow optimizations
-- **Package Management**: User packages and development tools
+- **Node.js Development**: Node.js, TypeScript, and related tools
+- **Media Processing**: Video, audio, and image processing tools
 - **macOS System Configuration**: Dock and Finder sidebar management
 - **Lessons**: Step-by-step guides for learning Nix configuration
 
@@ -161,6 +162,11 @@ flake.nix
 │   └── homeConfigurations.chan
 │       ├── home.packages (user packages)
 │       └── programs.git (git configuration)
+└── modules/
+│   ├── git.nix (git configuration)
+│   ├── node.nix (Node.js development tools)
+│   ├── media.nix (media processing tools)
+│   └── shell.nix (shell configuration)
 └── scripts/
     ├── configure-dock.sh
     ├── configure-finder-sidebar.sh
@@ -174,6 +180,7 @@ This repository includes step-by-step lessons for learning Nix configuration:
 - **Lesson 1**: Basic Nix flake setup
 - **Lesson 2**: Home-manager introduction and user environment management
 - **Lesson 3**: Git configuration with home-manager (first-class options vs extraConfig)
+- **Lesson 11**: Organizing your Nix configuration with modules
 
 Each lesson builds on the previous one, providing a comprehensive learning path.
 

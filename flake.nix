@@ -59,6 +59,7 @@
           ./modules/git.nix
           ./modules/node.nix
           ./modules/shell.nix
+          ./modules/media.nix
         ];
       };
     };
