@@ -13,6 +13,7 @@
     
     extraConfig = {
       core.editor = "nvim";
+      core.hooksPath = "/Users/chan/.config/git/hooks";
       credential.helper = "osxkeychain";
       diff = {
         compactionHeuristic = true;
@@ -68,4 +69,10 @@
       branches = "for-each-ref --sort=-committerdate --format='\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\"' refs/remotes";
     };
   };
-} 
+
+  # Global git hooks
+  home.file.".config/git/hooks/pre-commit" = {
+    source = ../hooks/pre-commit;
+    executable = true;
+  };
+}
