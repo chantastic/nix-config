@@ -2,20 +2,13 @@
 
 {
   home.packages = with pkgs; [
-    # Python runtime
+    # Python runtime and package manager
     python312
-    
-    # Speech recognition packages can be added here as needed
-    
-    # Add other Python packages here as needed
+    python312Packages.pip
   ];
 
-  # Set up Python environment variables
-  home.sessionVariables = {
-    PYTHONPATH = "$HOME/.local/lib/python3.12/site-packages:$PYTHONPATH";
-  };
-
-  # Add Python user bin to PATH
+  # Add Python user bin to PATH for pip-installed packages
+  # (Python automatically includes ~/.local/lib/python3.12/site-packages in sys.path)
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
