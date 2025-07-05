@@ -8,7 +8,7 @@
     exiftool       # Image metadata
     tesseract      # OCR
     yt-dlp         # YouTube downloader
-    openai-whisper # Speech recognition
+    openai-whisper-cpp  # Speech recognition (C++ implementation, more reliable on macOS)
     sox            # Audio processing and effects
     ffmpegthumbnailer  # Generate video thumbnails
     mediainfo      # Media file information
