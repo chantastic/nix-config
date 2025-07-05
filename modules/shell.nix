@@ -33,4 +33,5 @@
 
   # Import function files from repo
   home.file.".config/zsh/git.zsh".source = ../dotfiles/zsh/git.zsh;
+  home.file.".config/zsh/aliases.zsh".source = ../dotfiles/zsh/aliases.zsh;
 } 
