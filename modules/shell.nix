@@ -35,4 +35,5 @@
   home.file.".config/zsh/git.zsh".source = ../dotfiles/zsh/git.zsh;
   home.file.".config/zsh/aliases.zsh".source = ../dotfiles/zsh/aliases.zsh;
   home.file.".config/zsh/editor.zsh".source = ../dotfiles/zsh/editor.zsh;
+  home.file.".config/zsh/visual.zsh".source = ../dotfiles/zsh/vi.zsh;
 } 
