@@ -9,31 +9,22 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     
-    # Source external function files
-    initExtra = ''
-      for f in ~/.config/zsh/*.zsh; do
-        source "$f"
-      done
-    '';
-    
-    # History configuration
-    history = {
-      size = 10000;
-      save = 10000;
-      share = true;
-      ignoreDups = true;
-      ignoreSpace = true;
-    };
-    
-    # Set PATH as in previous .zshrc
+    # History and sourcing logic moved to dotfiles
+    # sessionVariables kept for Nix-specific PATH
     sessionVariables = {
       PATH = "$HOME/.nix-profile/bin:$PATH";
     };
+
+    # Source all zsh dotfiles via bootstrap.zsh
+    initExtra = ''
+      source ~/.config/zsh/bootstrap.zsh
+    '';
   };
 
   # Import function files from repo
-  home.file.".config/zsh/git.zsh".source = ../dotfiles/zsh/git.zsh;
   home.file.".config/zsh/aliases.zsh".source = ../dotfiles/zsh/aliases.zsh;
+  home.file.".config/zsh/bootstrap.zsh".source = ../dotfiles/zsh/bootstrap.zsh;
   home.file.".config/zsh/editor.zsh".source = ../dotfiles/zsh/editor.zsh;
-  home.file.".config/zsh/visual.zsh".source = ../dotfiles/zsh/vi.zsh;
+  home.file.".config/zsh/git.zsh".source = ../dotfiles/zsh/git.zsh;
+  home.file.".config/zsh/visual.zsh".source = ../dotfiles/zsh/visual.zsh;
 } 
