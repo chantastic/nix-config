@@ -53,6 +53,7 @@
               packages = with pkgs; [
                 mysides
                 dockutil
+                gh
               ];
             };
           }
