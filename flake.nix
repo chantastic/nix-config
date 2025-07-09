@@ -62,6 +62,7 @@
           ./modules/shell.nix
           ./modules/media.nix
           ./modules/python.nix
+          ./modules/php.nix
         ];
       };
     };
