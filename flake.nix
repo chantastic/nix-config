@@ -34,6 +34,13 @@
           type = "app";
           program = toString (pkgs.writeShellScript "configure-dock" (builtins.readFile ./scripts/configure-dock.sh));
         };
+        itt-to-srt = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "itt-to-srt" ''
+            exec ${pkgs.python312}/bin/python ${./scripts/itt-to-srt.py} "$@"
+          '');
+        };
+        
         activate = {
           type = "app";
           program = toString (pkgs.writeShellScript "activate" ''

@@ -10,6 +10,7 @@ This repository contains my personal Nix configuration using flakes and home-man
 - **Python Development**: Python runtime and development tools
 - **Media Processing**: Video, audio, and image processing tools
 - **macOS System Configuration**: Dock and Finder sidebar management
+- **Utility Scripts**: Python scripts for common tasks (e.g., subtitle conversion)
 - **Lessons**: Step-by-step guides for learning Nix configuration
 
 ## Quick Start
@@ -51,6 +52,41 @@ This configuration provides several convenient commands:
 
 - **`nix run .#configure-dock`** - Configure macOS dock using dockutil
 - **`nix run .#configure-finder-sidebar`** - Configure Finder sidebar using mysides
+
+### Utility Scripts
+
+- **`nix run .#itt-to-srt`** - Convert .itt (iTunes Timed Text) files to .srt (SubRip Subtitle) format
+
+### Remote Execution
+
+All commands can be executed remotely without cloning the repository:
+
+```bash
+# Run from anywhere using GitHub
+nix run github:youruser/nix-config#itt-to-srt input.itt
+nix run github:youruser/nix-config#macos-settings
+nix run github:youruser/nix-config#configure-dock
+
+# Run specific versions
+nix run github:youruser/nix-config/v1.0.0#itt-to-srt input.itt
+nix run github:youruser/nix-config/main#itt-to-srt input.itt
+```
+
+This makes your configuration a **portable toolkit** that anyone can use instantly without setup.
+
+### Discovering Available Commands
+
+To see all available commands in this configuration:
+
+```bash
+# From within the repository
+nix flake show
+
+# From anywhere (remote)
+nix flake show github:youruser/nix-config
+```
+
+This will list all flake apps, packages, and home configurations available.
 
 ## Making Changes
 
@@ -172,6 +208,7 @@ flake.nix
 └── scripts/
     ├── configure-dock.sh
     ├── configure-finder-sidebar.sh
+    ├── itt-to-srt.py
     └── macos-settings.sh
 ```
 
@@ -216,6 +253,28 @@ extraConfig = {
 - **Home-Manager**: Manages user environments, packages, and configuration files
 - **Flake Apps**: Provide convenient commands that wrap home-manager or other tools
 - **Why Wrapper Scripts**: Home-manager doesn't create flake apps automatically, so we create wrapper scripts to expose its functionality
+
+### Flake Apps vs Shell Aliases
+
+- **Flake Apps** (in `flake.nix`): The source of truth that packages scripts with dependencies
+- **Shell Aliases** (in `dotfiles/zsh/aliases.zsh`): Convenience shortcuts for global access
+- **Relationship**: Aliases point to flake apps, which package the actual scripts
+
+**Usage patterns:**
+```bash
+# Direct flake app usage (works from anywhere)
+nix run ~/nix-config#itt-to-srt input.itt
+nix run github:youruser/nix-config#itt-to-srt input.itt
+
+# Convenient aliases (personal, requires setup)
+itt-to-srt input.itt
+
+# Remote discovery and execution
+nix flake show github:youruser/nix-config
+nix run github:youruser/nix-config#itt-to-srt input.itt
+```
+
+This architecture makes your tools both **personally convenient** and **globally shareable**.
 
 ## Troubleshooting
 
@@ -289,6 +348,31 @@ apps.${system} = {
   my-new-command = {
     type = "app";
     program = toString (pkgs.writeShellScript "my-new-command" (builtins.readFile ./scripts/my-new-command.sh));
+  };
+};
+```
+
+### Adding Python Scripts
+
+Python scripts should use nix-shell shebangs for dependency management:
+
+```python
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p python312 python312Packages.requests
+
+import requests
+# Your script logic here
+```
+
+Then add them as flake apps:
+
+```nix
+apps.${system} = {
+  my-python-script = {
+    type = "app";
+    program = toString (pkgs.writeShellScript "my-python-script" ''
+      exec ${pkgs.python312}/bin/python ${./scripts/my-python-script.py} "$@"
+    '');
   };
 };
 ```
