@@ -21,10 +21,24 @@
     '';
   };
 
+  # Configure fzf for better integration
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    defaultCommand = "fd --type f";
+    defaultOptions = ["--height 40%" "--border"];
+    fileWidgetCommand = "fd --type f";
+    fileWidgetOptions = ["--preview 'bat --style=numbers --color=always --line-range :500 {}'"];
+  };
+
+  # Configure zoxide for smart directory navigation
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   # Import function files from repo
   home.file.".config/zsh/aliases.zsh".source = ../dotfiles/zsh/aliases.zsh;
   home.file.".config/zsh/bootstrap.zsh".source = ../dotfiles/zsh/bootstrap.zsh;
   home.file.".config/zsh/editor.zsh".source = ../dotfiles/zsh/editor.zsh;
-  home.file.".config/zsh/git.zsh".source = ../dotfiles/zsh/git.zsh;
-  home.file.".config/zsh/visual.zsh".source = ../dotfiles/zsh/visual.zsh;
 } 

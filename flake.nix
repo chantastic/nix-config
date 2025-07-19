@@ -61,6 +61,12 @@
                 mysides
                 dockutil
                 gh
+                fzf
+                fd
+                bat
+                zoxide
+                ripgrep
+                eza
               ];
             };
           }
