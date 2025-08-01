@@ -67,6 +67,7 @@
                 zoxide
                 ripgrep
                 eza
+                tmux
               ];
             };
           }
@@ -76,6 +77,7 @@
           ./modules/media.nix
           ./modules/python.nix
           ./modules/php.nix
+          ./modules/tmux.nix
         ];
       };
     };
