@@ -71,13 +71,18 @@
               ];
             };
           }
+          {
+            programs.tmux = {
+              enable = true;
+              extraConfig = builtins.readFile ./dotfiles/tmux/tmux.conf;
+            };
+          }
           ./modules/git.nix
           ./modules/node.nix
           ./modules/shell.nix
           ./modules/media.nix
           ./modules/python.nix
           ./modules/php.nix
-          ./modules/tmux.nix
           ./modules/neovim.nix
         ];
       };
