@@ -78,6 +78,7 @@
           ./modules/python.nix
           ./modules/php.nix
           ./modules/tmux.nix
+          ./modules/neovim.nix
         ];
       };
     };
