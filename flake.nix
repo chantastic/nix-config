@@ -84,6 +84,7 @@
           ./modules/python.nix
           ./modules/php.nix
           ./modules/neovim.nix
+          ./modules/fonts.nix
         ];
       };
     };
