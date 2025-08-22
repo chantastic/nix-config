@@ -25,5 +25,9 @@
     createNpmGlobalDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
       $DRY_RUN_CMD mkdir -p $VERBOSE_ARG $HOME/.npm-global
     '';
+    # Install global npm packages that aren't in nixpkgs via npm
+    installAnthropicClaudeCode = lib.hm.dag.entryAfter ["createNpmGlobalDir"] ''
+      $DRY_RUN_CMD $VERBOSE_ARG $HOME/.npm-global/bin/npm install -g @anthropic-ai/claude-code@latest || true
+    '';
   };
 } 
