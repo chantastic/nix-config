@@ -25,19 +25,7 @@ in {
   # fonts.fonts = systemFonts;
 
   # Font configuration for applications
-  fonts.fontconfig = {
-    enable = true;
-    # Enable subpixel rendering for better font rendering
-    subpixel = {
-      rgba = "rgb";
-      lcdfilter = "default";
-    };
-    # Enable antialiasing
-    antialias = true;
-    # Enable hinting
-    hinting = {
-      enable = true;
-      style = "slight";
-    };
-  };
+  # Note: fontconfig options like `fonts.fontconfig.antialias` are not
+  # available in this home-manager/nixpkgs release. Keep font package
+  # lists here and let the system/default modules manage fontconfig.
 } 
